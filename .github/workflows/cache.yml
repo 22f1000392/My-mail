@@ -1,0 +1,31 @@
+name: Cache Dependencies Example
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache dependencies
+        id: cache-dcd505d
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-dcd505d
+
+      - name: prime-cache-dcd505d
+        run: echo "Cache hit? ${{ steps.cache-dcd505d.outputs.cache-hit }}"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt || true
